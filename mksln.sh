@@ -30,7 +30,7 @@ rm -rf ${APP}
 mkdir ${APP}
 cd ${APP}
 
-#==================  PROYECTO DE LIBRERIA DE MODELOS
+#================== LIBRERIA DE MODELOS
 cbecho Proyecto $MODELOSPATH ...
 dotnet new classlib -o $MODELOSPATH
 rm $MODELOSPATH/*.cs
@@ -39,13 +39,12 @@ cp $TEMPLATES/Modelo.cs $MODELOSPATH/
 sed -i 's/MINAMESPACE/'${NS}'/g' $MODELOSPATH/Modelo.cs
 
 dotnet build $LIBPATH
-
-#==================  PROYECTO DE LIBRERIA PPAL DEL NEGOCIO
+#================== LIBRERIA PPAL DEL NEGOCIO
 cbecho Proyecto $LIBPATH ...
 dotnet new classlib -o $LIBPATH
 dotnet add $LIBPATH reference $MODELOSPATH/$MODELOS.csproj
 
-dotnet restore $LIBPATH
+#dotnet restore $LIBPATH
 rm $LIBPATH/*.cs
 
 cp $TEMPLATES/Sistema.cs $LIBPATH/${SISTEMA}.cs
@@ -53,8 +52,6 @@ sed -i 's/MINAMESPACE/'${NS}'/g' $LIBPATH/${SISTEMA}.cs
 sed -i 's/MISISTEMA/'${SISTEMA}'/g' $LIBPATH/${SISTEMA}.cs
 
 dotnet build $LIBPATH
-
-
 #===================  PROYECTO MAIN DE PUNTO DE ENTRADA
 cbecho Proyecto $ENTRYPATH ...
 dotnet new console -o $ENTRYPATH
@@ -72,7 +69,6 @@ sed -i 's/MINAMESPACE/'${NS}'/g' $ENTRYPATH/Controlador.cs
 sed -i 's/MISISTEMA/'${SISTEMA}'/g' $ENTRYPATH/Controlador.cs
 
 # dotnet run -p $ENTRYPATH/$ENTRY.csproj
-
 #=================== PROYECTO DE PRUEBAS UNITARIAS PPAL
 cbecho Proyecto $LIBTESTSPATH ...
 #cbecho class $NS.${SISTEMA}Test en ${SISTEMA}Tests.cs
@@ -85,7 +81,6 @@ sed -i 's/MINAMESPACE/'${NS}'/g' $LIBTESTSPATH/${SISTEMA}Tests.cs
 sed -i 's/MISISTEMA/'${SISTEMA}'/g' $LIBTESTSPATH/${SISTEMA}Tests.cs
 
 dotnet test $LIBTESTSPATH/$LIBTESTS.csproj
-
 #=================== PROYECTO DE PRUEBAS UNITARIAS CONSOLA
 cbecho Proyecto $ENTRYTESTSPATH ...
 dotnet new xunit -o $ENTRYTESTSPATH
@@ -96,8 +91,6 @@ cp $TEMPLATES/VistaTests.cs $ENTRYTESTSPATH/
 sed -i 's/MINAMESPACE/'${NS}'/g' $ENTRYTESTSPATH/VistaTests.cs
 
 dotnet test $ENTRYTESTSPATH/$ENTRYTESTS.csproj
-
-
 #=================== VSCODE WORKSPACE
 # cat <<EOF >${APP}.code-workspace
 # {
@@ -122,7 +115,6 @@ dotnet sln add $LIBTESTSPATH/$LIBTESTS.csproj
 dotnet sln add $ENTRYTESTSPATH/$ENTRYTESTS.csproj
 #=================== GIT
 dotnet new gitignore
-
 #=================== RUN VSCODE
 #tree `pwd` -d -L 2
 tree `pwd` -P *.cs  -I bin\|obj 
