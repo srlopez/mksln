@@ -2,6 +2,9 @@
 
 Script para crear una solución `dotnet`.  
 Permanentemente en `Beta`.
+Plugins interesantes para aprovechar esta estructura:
+- Solution
+- TestExplorer 
 
 La solución completa trata de organizar los proyectos relacionados para estudiar la organización de proyectos, las distintas capas que se pueden dar, y las maneras de abordar proyectos orientados a objetos.
 
