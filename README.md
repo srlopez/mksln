@@ -3,12 +3,13 @@
 Script para crear una solución `dotnet`.  
 Permanentemente en `Beta`.
 
-La solución completa trata de organizar 5 proyectos relacionados para estudiar la organización de proyectos, las distintas capas que se pueden dar, y las maneras de abordar proyectos orientados a objetos.
+La solución completa trata de organizar los proyectos relacionados para estudiar la organización de proyectos, las distintas capas que se pueden dar, y las maneras de abordar proyectos orientados a objetos.
 
-Consta de 5 proyectos
+Consta de los siguientes proyectos
 - La Lógica de la aplicación. `App`
 - Los Modelos de la aplicación. `App.Modelos`
 - Una interfaz tipo consola. `UI.Consola`
+- Un proyecto de repositorio. `Data`
 - Los Test de la Lógica. `App.Tests`
 - Los Test de la consola. `UI.Consola.Tests`
 
@@ -24,59 +25,56 @@ El primer parámetro (por defecto SlnAplicacion) será el nombre del directorio,
 La ejecución de comando crea un directorio con esos proyectos:
 
 ```bash
-santi@slimbook:~/dev/net/SlnNet$ ./mksln.sh 
-Directorio de la aplicación SlnAplicacion ...
-Proyecto src/Aplicacion.App.Modelos ...
+santi@slimbook:~/dev/net/SlnNet$ ./mksln.sh AppEjemplo MiSistema
+Directorio de la aplicación AppEjemplo ...
+Proyecto src/Ejemplo.App.Modelos ...
 The template "Class library" was created successfully.
-...
-Proyecto src/Aplicacion.App ...
+[...]
+Proyecto src/Ejemplo.Data ...
 The template "Class library" was created successfully.
-...
-Reference `..\Aplicacion.App.Modelos\Aplicacion.App.Modelos.csproj` added to the project.
-...
-Proyecto src/Aplicacion.UI.Consola ...
+[...]
+Proyecto src/Ejemplo.App ...
+The template "Class library" was created successfully.
+[...]
+Proyecto src/Ejemplo.UI.Consola ...
 The template "Console Application" was created successfully.
-...
-Reference `..\Aplicacion.App\Aplicacion.App.csproj` added to the project.
-Reference `..\Aplicacion.App.Modelos\Aplicacion.App.Modelos.csproj` added to the project.
-Proyecto test/Aplicacion.App.Tests ...
+[...]
+Proyecto test/Ejemplo.App.Tests ...
 The template "xUnit Test Project" was created successfully.
-...
-Reference `..\..\src\Aplicacion.App\Aplicacion.App.csproj` added to the project.
-...
-Test run for /home/santi/dev/net/SlnNet/SlnAplicacion/test/Aplicacion.App.Tests/...
+[...]
 Starting test execution, please wait...
 A total of 1 test files matched the specified pattern.
 
-Passed!  - Failed:     0, Passed:     2, Skipped:     0, Total:     2, 
-...
-Proyecto test/Aplicacion.UI.Consola.Tests ...
+Passed!  - Failed:     0, Passed:     2, Skipped:     0, Total:     2, Duration: 4 [.[...]
+Proyecto test/Ejemplo.UI.Consola.Tests ...
 The template "xUnit Test Project" was created successfully.
-...
-Reference `..\..\src\Aplicacion.UI.Consola\Aplicacion.UI.Consola.csproj` added to the project.
-...
+[...]
 Starting test execution, please wait...
 A total of 1 test files matched the specified pattern.
-...
-Passed!  - Failed:     0, Passed:     5, Skipped:     0, Total:     5, 
-...
+
+Passed!  - Failed:     0, Passed:     5, Skipped:     0, Total:     5, Duration: 4 
+[...]
 The template "Solution File" was created successfully.
+[...]
 The template "dotnet gitignore file" was created successfully.
-/home/santi/dev/net/SlnNet/SlnAplicacion
+/home/santi/dev/net/SlnNet/AppEjemplo
 ├── src
-│ ├── Aplicacion.App
-│ │ └── Sistema.cs
-│ ├── Aplicacion.App.Modelos
+│ ├── Ejemplo.App
+│ │ └── MiSistema.cs
+│ ├── Ejemplo.App.Modelos
 │ │ └── Modelo.cs
-│ └── Aplicacion.UI.Consola
+│ ├── Ejemplo.Data
+│ │ ├── IRepo.cs
+│ │ └── RepoJson.cs
+│ └── Ejemplo.UI.Consola
 │     ├── Controlador.cs
 │     ├── Program.cs
 │     └── Vista.cs
 └── test
-    ├── Aplicacion.App.Tests
-    │ └── SistemaTests.cs
-    └── Aplicacion.UI.Consola.Tests
+    ├── Ejemplo.App.Tests
+    │ └── MiSistemaTests.cs
+    └── Ejemplo.UI.Consola.Tests
         └── VistaTests.cs
 
-7 directories, 7 files
+8 directories, 9 files
 ```
