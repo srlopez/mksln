@@ -34,7 +34,7 @@ namespace MINAMESPACE.UI.Consola
             WriteLine();
             for (int i = 0; i < datos.Count; i++)
             {
-                WriteLine($"  {i + 1:##}.- {datos[i].ToString()}");
+                WriteLine($" {i + 1,3:###}.- {datos[i].ToString()}");
             }
             WriteLine();
         }
