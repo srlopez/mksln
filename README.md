@@ -3,16 +3,16 @@
 Script para crear una solución `dotnet`.  
 Permanentemente en `Beta`.
 Plugins interesantes para aprovechar esta estructura:
-- Solution
-- TestExplorer 
+- vscode-solution-explorer
+- .NET Core Test Explorer
 
 La solución completa trata de organizar los proyectos relacionados para estudiar la organización de proyectos, las distintas capas que se pueden dar, y las maneras de abordar proyectos orientados a objetos.
 
 Consta de los siguientes proyectos
-- La Lógica de la aplicación. `App`
-- Los Modelos de la aplicación. `App.Modelos`
-- Una interfaz tipo consola. `UI.Consola`
-- Un proyecto de repositorio. `Data`
+- La Lógica de la aplicación. `App` (o capa de Negocio)
+- Los Modelos de la aplicación. `App.Modelos` (de la capa de Negocio)
+- Una interfaz tipo consola. `UI.Consola` (o capa de Presentación)
+- Un proyecto de repositorio. `Data` (o capa de Acceso a Datos)
 - Los Test de la Lógica. `App.Tests`
 - Los Test de la consola. `UI.Consola.Tests`
 
