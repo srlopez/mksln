@@ -38,10 +38,10 @@ namespace MINAMESPACE.UI.Consola
             }
             WriteLine();
         }
-        public void MostrarParrilla(string titulo, List<string>[,] parrilla)
+                public void MostrarParrilla(string titulo, List<string>[,] parrilla)
         {
             var alto = parrilla[0, 0].Count; //Numero de lineas de los elementos
-            const int ancho = 10; //Ancho de cada elemento
+            const int ancho = 16; //Ancho de cada elemento
             var filas = parrilla.GetLength(0);
             var columnas = parrilla.GetLength(1);
 
@@ -49,7 +49,8 @@ namespace MINAMESPACE.UI.Consola
             const char charV = '|';
             const char charHV = '+';
             var border = new string(charH, ancho);
-
+            
+            Mostrar(titulo, ConsoleColor.Yellow);
             MostrarIndiceColumnas(columnas);
             MostrarSeparadorH(columnas);
             for (var f = 0; f < filas; f++)
@@ -59,7 +60,9 @@ namespace MINAMESPACE.UI.Consola
                     MostrarIndiceFila(f, i == alto % 2);
                     for (var c = 0; c < columnas; c++)
                     {
-                        Write($"{charV}{parrilla[f, c][i],-ancho}");
+                        var s = parrilla[f, c][i]+ new string(' ', ancho);
+                        Write($"{charV}{s.Substring(0,ancho)}");
+                        //Write($"{charV}{parrilla[f, c][i],-ancho}");
                     }
                     WriteLine(charV);
                 }
@@ -73,13 +76,12 @@ namespace MINAMESPACE.UI.Consola
             }
             void MostrarIndiceColumnas(int len)
             {
-                Write("  ");
-                for (var c = 0; c < len; c++) Write($"  {c,5}    ");
+                var fmt = new string(' ', ancho/2);
+                for (var c = 0; c < len; c++) Write($"{fmt}{c}{fmt}");
                 WriteLine();
             }
             void MostrarIndiceFila(int f, bool show) =>
                 Write(show ? $"{f,-2}" : "  ");
-
         }
 
         // ===== METODOS DE CAPTURA DE INFORMACION =====

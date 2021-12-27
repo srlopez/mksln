@@ -13,7 +13,8 @@ NS=`echo $APP | sed 's/\([A-Za-z]\+[^A-Z]\)\([A-Z].*\)/\2/g'`
 # proyectos
 LIB=$NS.App           #LIB=$APP.Lib        #App #App.Lib #App.Log #App.BLL #App.Core
 LIBTESTS=$LIB.Tests
-MODELOS=$LIB.Modelos  
+MODELOS=$LIB.Modelos 
+DATA=$NS.Data 
 ENTRY=$NS.UI.Consola  #ENTRY=$APP.Consola  #Consola #UI.Console
 ENTRYTESTS=$NS.UI.Consola.Tests
 # directorios
@@ -21,6 +22,7 @@ ENTRYPATH=src/$ENTRY
 LIBPATH=src/$LIB
 LIBTESTSPATH=test/$LIBTESTS
 MODELOSPATH=src/$MODELOS
+DATAPATH=src/$DATA 
 ENTRYTESTSPATH=test/$ENTRYTESTS
 
 cbecho() { tput setaf 14; tput bold; echo $*; tput sgr0; }
@@ -39,10 +41,27 @@ cp $TEMPLATES/Modelo.cs $MODELOSPATH/
 sed -i 's/MINAMESPACE/'${NS}'/g' $MODELOSPATH/Modelo.cs
 
 dotnet build $LIBPATH
+
+#================== LIBRERIA CAPA DE DATOS
+cbecho Proyecto $DATAPATH ...
+dotnet new classlib -o $DATAPATH
+dotnet add $DATAPATH reference $MODELOSPATH
+dotnet add $DATAPATH package Newtonsoft.Json
+#dotnet restore $DATAPATH
+rm $DATAPATH/*.cs
+
+cp $TEMPLATES/IRepo.cs $DATAPATH/IRepo.cs
+cp $TEMPLATES/RepoJson.cs $DATAPATH/RepoJson.cs
+sed -i 's/MINAMESPACE/'${NS}'/g' $DATAPATH/IRepo.cs
+sed -i 's/MINAMESPACE/'${NS}'/g' $DATAPATH/RepoJson.cs
+
+dotnet build $DATAPATH
+
 #================== LIBRERIA PPAL DEL NEGOCIO
 cbecho Proyecto $LIBPATH ...
 dotnet new classlib -o $LIBPATH
-dotnet add $LIBPATH reference $MODELOSPATH/$MODELOS.csproj
+dotnet add $LIBPATH reference $MODELOSPATH
+dotnet add $LIBPATH reference $DATAPATH
 
 #dotnet restore $LIBPATH
 rm $LIBPATH/*.cs
@@ -52,11 +71,13 @@ sed -i 's/MINAMESPACE/'${NS}'/g' $LIBPATH/${SISTEMA}.cs
 sed -i 's/MISISTEMA/'${SISTEMA}'/g' $LIBPATH/${SISTEMA}.cs
 
 dotnet build $LIBPATH
+
 #===================  PROYECTO MAIN DE PUNTO DE ENTRADA
 cbecho Proyecto $ENTRYPATH ...
 dotnet new console -o $ENTRYPATH
-dotnet add $ENTRYPATH/$ENTRY.csproj reference $LIBPATH/$LIB.csproj
-dotnet add $ENTRYPATH/$ENTRY.csproj reference $MODELOSPATH/$MODELOS.csproj
+dotnet add $ENTRYPATH reference $LIBPATH
+dotnet add $ENTRYPATH reference $MODELOSPATH
+dotnet add $ENTRYPATH reference $DATAPATH
 
 cp $TEMPLATES/Vista.cs $ENTRYPATH
 cp $TEMPLATES/Program.cs $ENTRYPATH
@@ -69,11 +90,12 @@ sed -i 's/MINAMESPACE/'${NS}'/g' $ENTRYPATH/Controlador.cs
 sed -i 's/MISISTEMA/'${SISTEMA}'/g' $ENTRYPATH/Controlador.cs
 
 # dotnet run -p $ENTRYPATH/$ENTRY.csproj
+
 #=================== PROYECTO DE PRUEBAS UNITARIAS PPAL
 cbecho Proyecto $LIBTESTSPATH ...
 #cbecho class $NS.${SISTEMA}Test en ${SISTEMA}Tests.cs
 dotnet new xunit -o $LIBTESTSPATH
-dotnet add $LIBTESTSPATH/$LIBTESTS.csproj reference $LIBPATH/$LIB.csproj
+dotnet add $LIBTESTSPATH reference $LIBPATH
 rm $LIBTESTSPATH/*.cs
 
 cp $TEMPLATES/SistemaTests.cs $LIBTESTSPATH/${SISTEMA}Tests.cs
@@ -84,7 +106,7 @@ dotnet test $LIBTESTSPATH/$LIBTESTS.csproj
 #=================== PROYECTO DE PRUEBAS UNITARIAS CONSOLA
 cbecho Proyecto $ENTRYTESTSPATH ...
 dotnet new xunit -o $ENTRYTESTSPATH
-dotnet add $ENTRYTESTSPATH/$ENTRYTESTS.csproj reference $ENTRYPATH/$ENTRY.csproj
+dotnet add $ENTRYTESTSPATH reference $ENTRYPATH
 rm $ENTRYTESTSPATH/*.cs
 
 cp $TEMPLATES/VistaTests.cs $ENTRYTESTSPATH/
@@ -111,6 +133,7 @@ dotnet new sln
 dotnet sln add $ENTRYPATH/$ENTRY.csproj
 dotnet sln add $LIBPATH/$LIB.csproj
 dotnet sln add $MODELOSPATH/$MODELOS.csproj
+dotnet sln add $DATAPATH/$DATA.csproj
 dotnet sln add $LIBTESTSPATH/$LIBTESTS.csproj
 dotnet sln add $ENTRYTESTSPATH/$ENTRYTESTS.csproj
 #=================== GIT

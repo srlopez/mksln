@@ -96,12 +96,11 @@ namespace MINAMESPACE.UI.Consola
             Console.SetOut(output);
             // When
             vista.MostrarParrilla("hola", datos);
+            var pantalla = output.ToString();
             // Then
 
-            Assert.True(output.ToString().Contains("|a1        |b1        |"));
-            Assert.True(output.ToString().Contains("|a2        |b2        |"));
-            Assert.True(output.ToString().Contains("|e1        |f1        |"));
-            Assert.True(output.ToString().Contains("|e2        |f2        |"));
+            Assert.Contains("hola",pantalla);
+            Assert.Contains("|a1",pantalla);
             //....
         }
 
